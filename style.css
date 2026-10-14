@@ -1,0 +1,916 @@
+/* =====================================================================
+   BRUMPHOMET LIVES · Estudo de caso v2 (compacto, focado em UX)
+   style.css
+
+   Mobile-first: o estilo base é o do celular; as @media (min-width)
+   ADICIONAM regras para telas maiores.
+
+   Pontos de quebra
+     480px  celular grande
+     768px  tablet
+     1024px desktop (menu horizontal, footer sticky)
+     1280px tela grande
+
+   Índice
+     1. Tokens (Brumphomet Design System v1.0)
+     2. Base e utilitários
+     3. Header e menu (hambúrguer à direita no mobile)
+     4. Botões e links de ação
+     5. Hero
+     6. Seções
+     7. Cards
+     8. Aprendizados e chamada do currículo
+     9. Footer (sticky no desktop)
+     10. Janelas de detalhes e imagem ampliada
+     11. Seta de voltar ao topo (componente reutilizável)
+     12. Movimento e Google Tradutor
+   ===================================================================== */
+
+
+/* =====================================================================
+   INÍCIO: 1. TOKENS
+   ===================================================================== */
+:root {
+  /* Marca: paleta original */
+  --brand-black: #111111;
+  --brand-wine: #8F075A;
+  --brand-pink: #E51C78;
+  --brand-white: #FFFFFF;
+
+  /* Primitivas de interface */
+  --ink-950: #0A0A0A; --ink-900: #111111; --ink-850: #1A1418;
+  --ink-800: #221820; --ink-700: #2E2329; --ink-600: #3A2E35;
+  --wine-950: #2A0E1F; --wine-700: #5C1440; --wine-500: #8F075A;
+  --pink-700: #A3104F; --pink-600: #C4145F; --pink-500: #E51C78; --pink-300: #FF5C9E;
+  --mauve-500: #8E8189; --mauve-400: #A89BA3; --mauve-300: #C9BEC4;
+
+  /* Semânticas (contrastes verificados no design system) */
+  --color-bg: var(--ink-900);
+  --color-bg-deep: var(--ink-950);
+  --color-surface: var(--ink-850);
+  --color-surface-raised: var(--ink-800);
+  --color-surface-wine: var(--wine-950);
+  --color-ambient: rgb(143 7 90 / .28);
+  --color-text: var(--brand-white);             /* 18,9:1 */
+  --color-text-secondary: var(--mauve-300);     /* 10,5:1 */
+  --color-text-muted: var(--mauve-400);         /* 7,1:1 */
+  --color-text-accent: var(--pink-300);         /* 6,5:1 */
+  --color-display-accent: var(--brand-pink);    /* só texto >= 24px */
+  --color-border-subtle: var(--ink-700);
+  --color-border-wine: var(--wine-700);
+  --color-border-control: var(--brand-pink);    /* >= 3:1 */
+  --color-link: var(--pink-300);
+  --color-link-hover: var(--brand-white);
+  --color-action: var(--pink-600);              /* branco sobre ele: 5,8:1 */
+  --color-action-hover: var(--pink-700);
+  --color-action-active: var(--wine-500);
+  --color-focus: var(--pink-300);
+
+  /* Tipografia (fluida com clamp) */
+  --font-ui: "Manrope", system-ui, sans-serif;
+  --type-display: 800 clamp(2.25rem, 1.4rem + 4vw, 4.5rem)/1.02 var(--font-ui);
+  --type-h2: 800 clamp(1.75rem, 1.3rem + 2vw, 2.75rem)/1.08 var(--font-ui);
+  --type-h3: 700 1.125rem/1.3 var(--font-ui);
+  --type-lead: 400 clamp(1.0625rem, 1rem + .4vw, 1.25rem)/1.5 var(--font-ui);
+  --type-body: 400 1rem/1.6 var(--font-ui);
+  --type-caption: 500 .875rem/1.5 var(--font-ui);
+  --type-overline: 700 .8125rem/1 var(--font-ui);
+  --type-nav: 600 .9375rem/1 var(--font-ui);
+  --type-control: 700 .9375rem/1 var(--font-ui);
+  --tracking-display: -.03em;
+  --tracking-h2: -.02em;
+  --tracking-overline: .16em;
+
+  /* Espaço, forma e movimento */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-full: 999px;
+  --shadow-card: 0 12px 32px -16px rgb(0 0 0 / .9), inset 0 1px 0 rgb(255 255 255 / .04);
+  --glow-accent: 0 8px 32px -12px rgb(229 28 120 / .45);
+  --dur-fast: 120ms; --dur-base: 200ms; --dur-slow: 320ms;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+
+  /* Layout */
+  --container-max: 1200px;
+  --margin: 16px;
+  --header-h: 64px;
+  --footer-h: 0px;          /* no desktop vira a altura do footer sticky */
+  --section-gap: var(--space-7);
+  --target: 48px;           /* área de toque: 48px no celular, 44px no desktop */
+  --to-top-size: 52px;
+
+  color-scheme: dark;
+}
+
+@media (min-width: 480px) {
+  :root { --margin: 20px; }
+}
+
+@media (min-width: 768px) {
+  :root { --margin: 32px; --section-gap: var(--space-8); }
+}
+
+@media (min-width: 1024px) {
+  :root { --margin: 40px; --section-gap: var(--space-9); --target: 44px; --footer-h: 64px; --to-top-size: 56px; }
+}
+/* FIM: 1. TOKENS */
+
+
+/* =====================================================================
+   INÍCIO: 2. BASE E UTILITÁRIOS
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  overflow-x: clip; /* o painel do menu fechado (fora da tela) não cria rolagem lateral */
+  /* O header e o footer fixos nunca cobrem o item focado (WCAG 2.4.11) */
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+  scroll-padding-bottom: calc(var(--footer-h) + var(--to-top-size) + var(--space-6));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+main { flex: 1; }
+main:focus { outline: none; } /* foco programático do "Pular para o conteúdo" */
+
+/* Rolagem do fundo bloqueada com o menu ou uma janela aberta */
+body.is-locked { overflow: hidden; }
+
+img { display: block; max-width: 100%; height: auto; }
+ul { list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+a { color: var(--color-link); text-underline-offset: 4px; transition: color var(--dur-fast) var(--ease-out); }
+a:hover { color: var(--color-link-hover); }
+
+/* Componente: anel de foco (WCAG 2.4.7) */
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: var(--radius-sm); }
+h1:focus { outline: none; } /* destino do "voltar ao topo", não é controle */
+
+h1, h2, h3 { text-wrap: balance; }
+p, dd, li { text-wrap: pretty; }
+
+/* Componente: container centralizado (máx. 1200px de conteúdo) */
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + 2 * var(--margin));
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+/* Componente: texto só para leitores de tela */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Componente: link "Pular para o conteúdo" (visível só no foco) */
+.skip-link {
+  position: fixed; left: var(--space-4); top: -100px; z-index: 200;
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+  background: var(--color-action); color: var(--brand-white); font: var(--type-control); text-decoration: none;
+}
+.skip-link:focus { top: var(--space-3); color: var(--brand-white); }
+/* FIM: 2. BASE E UTILITÁRIOS */
+
+
+/* =====================================================================
+   INÍCIO: 3. HEADER E MENU
+   Mobile: hambúrguer à direita; painel desliza pela lateral direita.
+   Desktop (>= 1024px): menu horizontal no próprio header.
+   ===================================================================== */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+/* Fundo com desfoque num pseudo-elemento: backdrop-filter no próprio header
+   prenderia o painel do menu (position: fixed) dentro dos 64px do header */
+.site-header::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgb(10 10 10 / .94);
+  backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  min-height: var(--header-h);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+
+/* Componente: marca */
+.brand { display: flex; flex-direction: column; gap: 2px; margin-right: auto; text-decoration: none; color: var(--color-text); }
+.brand:hover { color: var(--color-text); }
+.brand__kicker { font: var(--type-overline); font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-text-muted); }
+.brand__name { font-weight: 700; font-size: 1.0625rem; white-space: nowrap; }
+/* Celular pequeno: marca um pouco menor para caber idiomas + menu na mesma linha */
+@media (max-width: 399px) {
+  .brand__name { font-size: .9375rem; }
+  .brand__kicker { font-size: .625rem; }
+}
+
+/* Componente: botão hambúrguer (último item do header, à direita) */
+.menu-toggle {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-3);
+  min-height: 48px; min-width: 48px; padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md);
+  font: var(--type-control);
+  transition: border-color var(--dur-fast), background-color var(--dur-fast);
+}
+.menu-toggle:hover { border-color: var(--brand-pink); background: var(--color-surface); }
+.menu-toggle__icon, .menu-toggle__icon::before, .menu-toggle__icon::after {
+  display: block; width: 18px; height: 2px; background: currentColor; border-radius: 2px;
+}
+.menu-toggle__icon { position: relative; }
+/* Abaixo de 400px o rótulo "Menu" fica só para leitores de tela */
+@media (max-width: 399px) {
+  .menu-toggle__label {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+}
+@media (min-width: 400px) {
+  .menu-toggle { padding: 0 var(--space-4); }
+}
+.menu-toggle__icon::before, .menu-toggle__icon::after { content: ""; position: absolute; left: 0; }
+.menu-toggle__icon::before { top: -6px; }
+.menu-toggle__icon::after { top: 6px; }
+
+/* Componente: fundo escurecido atrás do painel (clique fecha o menu) */
+.nav-scrim {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgb(0 0 0 / .65);
+  opacity: 0; transition: opacity var(--dur-slow) var(--ease-out);
+}
+.nav-scrim[hidden] { display: none; }
+.nav-scrim.is-visible { opacity: 1; }
+
+/* Componente: painel lateral direito (mobile) */
+.nav-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 70;
+  width: min(86vw, 360px);
+  display: flex; flex-direction: column; gap: var(--space-6);
+  padding: 0 var(--space-5) var(--space-7);
+  background: var(--color-bg-deep);
+  border-left: 1px solid var(--color-border-wine);
+  box-shadow: -24px 0 48px -24px rgb(229 28 120 / .35);
+  overflow-y: auto; overscroll-behavior: contain;
+  transform: translateX(100%);
+  visibility: hidden; /* fechado: fora do Tab */
+  transition: transform var(--dur-slow) var(--ease-out), visibility 0s linear var(--dur-slow);
+}
+.nav-panel.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform var(--dur-slow) var(--ease-out), visibility 0s;
+}
+
+.nav-panel__head {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: var(--header-h);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.nav-panel__title { font: var(--type-overline); letter-spacing: var(--tracking-overline); text-transform: uppercase; color: var(--color-text-muted); }
+
+.nav-close {
+  width: 48px; height: 48px; border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+  font-size: 1.75rem; line-height: 1;
+}
+.nav-close:hover { border-color: var(--brand-pink); }
+
+/* Componente: links das seções */
+.nav-list { display: flex; flex-direction: column; }
+.nav-list a {
+  display: flex; align-items: center; min-height: 56px;
+  font: var(--type-nav); font-size: 1.125rem; color: var(--color-text-secondary); text-decoration: none;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.nav-list a:hover { color: var(--color-text); }
+/* Item atual: cor + sublinhado (não só cor, WCAG 1.4.1) */
+.nav-list a[aria-current="true"] {
+  color: var(--color-text-accent);
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px;
+}
+
+/* Componente: seletor de idioma (no header sticky em todas as larguras) */
+.lang-switch { display: flex; gap: 0; }
+.lang-switch button {
+  min-width: 36px; min-height: var(--target); padding: 0 var(--space-1);
+  border-radius: var(--radius-md);
+  font: var(--type-nav); color: var(--color-text-muted);
+  transition: color var(--dur-fast), background-color var(--dur-fast);
+}
+.lang-switch button:hover { color: var(--color-text); background: var(--color-surface); }
+.lang-switch button[aria-pressed="true"] {
+  color: var(--color-text);
+  text-decoration: underline; text-decoration-color: var(--brand-pink);
+  text-decoration-thickness: 2px; text-underline-offset: 6px;
+}
+
+
+/* Desktop: menu horizontal, sem hambúrguer nem painel */
+@media (min-width: 1024px) {
+  .menu-toggle, .nav-scrim, .nav-panel__head { display: none; }
+
+  .nav-panel {
+    position: static; z-index: auto; width: auto; flex: 1;
+    flex-direction: row; align-items: center;
+    margin-left: var(--space-7); padding: 0;
+    background: none; border: 0; box-shadow: none; overflow: visible;
+    transform: none; visibility: visible; transition: none;
+  }
+  .nav-list { flex-direction: row; gap: var(--space-1); }
+  .nav-list a {
+    position: relative; min-height: var(--header-h); padding: 0 var(--space-3);
+    border: 0; font-size: .9375rem;
+  }
+  .nav-list a[aria-current="true"] { text-decoration: none; }
+  .nav-list a[aria-current="true"]::after {
+    content: ""; position: absolute; left: var(--space-3); right: var(--space-3); bottom: 0;
+    height: 2px; background: var(--brand-pink);
+  }
+  .brand { margin-right: 0; }
+  .lang-switch button { min-width: 40px; }
+}
+/* FIM: 3. HEADER E MENU */
+
+
+/* =====================================================================
+   INÍCIO: 4. BOTÕES E LINKS DE AÇÃO
+   ===================================================================== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-3);
+  min-height: var(--target); padding: 0 var(--space-5);
+  border-radius: var(--radius-md); font: var(--type-control); text-decoration: none; text-align: center;
+  white-space: nowrap;
+  transition: background-color var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-base), color var(--dur-fast);
+}
+
+/* Componente: botão primário (um por tela) */
+.btn--primary {
+  min-height: 48px; padding: 0 var(--space-6);
+  background: var(--color-action); color: var(--brand-white); border-radius: var(--radius-full);
+}
+.btn--primary:hover { background: var(--color-action-hover); color: var(--brand-white); box-shadow: var(--glow-accent); }
+.btn--primary:active { background: var(--color-action-active); }
+
+/* Componente: botão secundário (contorno rosa) */
+.btn--secondary {
+  border: 1px solid var(--color-border-control); color: var(--color-text);
+  font-size: .875rem; padding: 0 var(--space-4);
+}
+.btn--secondary:hover { background: var(--color-surface-wine); color: var(--color-text); }
+
+/* Componente: link de ação dentro dos cards */
+.link-action {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: var(--target);
+  color: var(--color-link); font-weight: 700; font-size: .9375rem;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.link-action:hover { color: var(--color-link-hover); }
+/* FIM: 4. BOTÕES E LINKS DE AÇÃO */
+
+
+/* =====================================================================
+   INÍCIO: 5. HERO
+   ===================================================================== */
+.hero {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 35%, var(--color-ambient), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 10% 90%, rgb(143 7 90 / .12), transparent 70%),
+    var(--color-bg-deep);
+}
+
+.hero__grid {
+  display: grid; gap: var(--space-6);
+  padding-block: var(--space-6) var(--space-7);
+}
+
+/* Componente: texto do hero */
+.overline {
+  font: var(--type-overline); letter-spacing: var(--tracking-overline); text-transform: uppercase;
+  color: var(--color-text-accent); margin-bottom: var(--space-4);
+}
+.hero__title { font: var(--type-display); letter-spacing: var(--tracking-display); margin-bottom: var(--space-4); }
+.hero__accent { color: var(--color-display-accent); display: block; }
+.lead { font: var(--type-lead); color: var(--color-text-secondary); max-width: 34ch; margin-bottom: var(--space-6); }
+
+/* Componente: aviso de versão resumida (destaque com borda rosa à esquerda) */
+.version-note {
+  margin-top: var(--space-6); max-width: 46ch;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border-wine); border-left: 3px solid var(--brand-pink);
+  border-radius: var(--radius-md);
+  background: rgb(42 14 31 / .75);           /* vinho da marca, translúcido */
+}
+.version-note__tag {
+  font: var(--type-overline); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--color-text-accent); margin-bottom: var(--space-2);
+}
+.version-note__text { font-size: .9375rem; color: var(--color-text-secondary); }
+.version-note__text a { font-weight: 700; white-space: nowrap; }
+
+/* Componente: logo + notebook */
+.hero__media { display: grid; justify-items: center; }
+.hero__logo {
+  width: min(90%, 520px); margin-bottom: calc(-1 * var(--space-4));
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 6px 24px rgb(229 28 120 / .35));
+}
+/* Componente: mockup de notebook em perspectiva 3/4 (só CSS)
+   Direção: PROMPT-MOCKUP-NOTEBOOK.md. Ângulo discreto para a tela
+   continuar quase de frente e a live não parecer distorcida. */
+
+/* Cena: dá profundidade (perspectiva) ao notebook */
+.laptop-scene {
+  width: 86%; max-width: 520px;
+  margin-top: var(--space-2);
+  perspective: 2600px;              /* perspectiva longa: a base perto não fica gigante */
+  padding-bottom: 24%;              /* espaço para a base deitada */
+}
+
+.laptop {
+  --lid-radius: clamp(10px, 2.4vw, 18px);
+  --tilt-y: -12deg;                 /* giro lateral (celular) */
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-10deg) rotateY(var(--tilt-y)); /* vista um pouco de cima, para o teclado aparecer */
+}
+@media (min-width: 768px) {
+  .laptop { --tilt-y: -18deg; }
+}
+
+/* Brilho rosa e sombra no chão */
+.laptop::after {
+  content: ""; position: absolute; z-index: -1;
+  left: -4%; right: -4%; bottom: -26%; height: 30%;
+  background: radial-gradient(ellipse at center, rgb(229 28 120 / .5), rgb(143 7 90 / .22) 45%, transparent 70%);
+  filter: blur(18px);
+  transform: translateZ(-40px);
+}
+
+/* Tampa */
+.laptop__lid {
+  position: relative;
+  padding: 3.2% 2.6% 3.6%;
+  border-radius: var(--lid-radius) var(--lid-radius) 4px 4px;
+  background: linear-gradient(180deg, #17161a, #0b0b0d);
+  box-shadow:
+    inset 0 0 0 1px #2c2a31,               /* fio interno da moldura */
+    0 0 0 1.5px #4a4752,                   /* aro de alumínio */
+    0 0 0 2.5px #1a181d,
+    0 40px 80px -40px rgb(229 28 120 / .55);
+}
+
+/* Câmera */
+.laptop__camera {
+  position: absolute; top: 1.2%; left: 50%;
+  width: 6px; height: 6px; border-radius: 50%;
+  transform: translate(-50%, 0);
+  background: radial-gradient(circle at 35% 35%, #3b4a63, #0b0d12 60%);
+  box-shadow: 0 0 0 1.5px #1f1e23;
+}
+
+/* Tela */
+.laptop__screen {
+  position: relative;
+  aspect-ratio: 16 / 10; overflow: hidden;
+  border-radius: 3px;
+  background: #000;
+}
+.laptop__screen img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 72%; } /* enquadra o rosto + as legendas */
+
+/* Reflexo diagonal no vidro */
+.laptop__screen::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, rgb(255 255 255 / .10) 0%, rgb(255 255 255 / .03) 28%, transparent 42%);
+}
+
+/* Base (deck): deitada para a frente a partir da dobradiça */
+.laptop__deck {
+  position: absolute; top: 100%; left: 0; right: 0;   /* mesma largura da tampa */
+  aspect-ratio: 16 / 7.6;
+  transform-origin: top center;
+  transform: rotateX(72deg); /* tampa um pouco além de 90°, como um notebook aberto */
+  border-radius: 6px 6px 18px 18px;
+  background: linear-gradient(180deg, #4b4852 0%, #34313b 40%, #2a2830 100%);
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / .18),   /* dobradiça */
+    inset 0 -6px 0 #1b1a1f,                 /* borda frontal */
+    inset 0 -7px 0 rgb(255 255 255 / .22),  /* reflexo da borda frontal */
+    0 30px 40px -10px rgb(0 0 0 / .8);
+}
+
+/* Teclado: teclas escuras com retroiluminação rosa entre elas */
+.laptop__keyboard {
+  position: absolute; top: 8%; left: 9%; right: 9%; height: 46%;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(90deg, #0b0a0d 0 3px, transparent 3px calc(100% / 15)),   /* vãos entre teclas */
+    repeating-linear-gradient(180deg, #0b0a0d 0 3px, transparent 3px calc(100% / 6)),
+    radial-gradient(ellipse at 50% 60%, rgb(229 28 120 / .28), transparent 75%),         /* retroiluminação rosa */
+    #232128;                                                                            /* teclas */
+  box-shadow: 0 0 0 3px #0b0a0d, 0 0 22px rgb(229 28 120 / .3);
+}
+
+/* Trackpad */
+.laptop__trackpad {
+  position: absolute; top: 60%; left: 50%; width: 36%; height: 30%;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #3a3741, #312e37);
+  box-shadow: inset 0 0 0 1px #57535e;
+}
+
+/* Tablet: texto e imagem lado a lado só quando há espaço */
+@media (min-width: 768px) {
+  .hero__grid { padding-block: var(--space-7) var(--space-8); }
+}
+@media (min-width: 1024px) {
+  .hero__grid { grid-template-columns: 5fr 7fr; align-items: center; gap: var(--space-7); padding-block: var(--space-8) var(--space-9); }
+  .hero__media { justify-items: center; }
+}
+
+/* Componente: faixa de informações do projeto */
+.facts-band { border-block: 1px solid var(--color-border-subtle); background: rgb(10 10 10 / .7); position: relative; }
+.facts { display: grid; gap: var(--space-4); padding-block: var(--space-5); }
+.fact { display: grid; grid-template-columns: 32px 1fr; column-gap: var(--space-4); align-items: center; }
+.fact__icon, .learning__icon {
+  grid-row: span 2; width: 28px; height: 28px;
+  fill: none; stroke: var(--color-text-secondary); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+.fact dt { font: var(--type-caption); font-size: .8125rem; color: var(--color-text-muted); }
+.fact dd { font-weight: 600; }
+
+@media (min-width: 768px) {
+  .facts { grid-template-columns: 1fr 1.6fr 1fr; gap: 0; }
+  .fact { padding-inline: var(--space-5); }
+  .fact + .fact { border-left: 1px solid var(--color-border-subtle); }
+  .fact:first-child { padding-left: 0; }
+}
+/* FIM: 5. HERO */
+
+
+/* =====================================================================
+   INÍCIO: 6. SEÇÕES
+   Mobile e tablet: título em cima, cards embaixo.
+   Desktop: título 4 colunas à esquerda + cards 8 colunas à direita.
+   ===================================================================== */
+.section { padding-block: var(--section-gap); border-bottom: 1px solid var(--color-border-subtle); }
+.section--wine {
+  background: radial-gradient(ellipse 50% 80% at 0% 50%, rgb(143 7 90 / .16), transparent 70%), var(--color-bg);
+}
+
+.section__grid { display: grid; gap: var(--space-6); }
+
+/* Componente: cabeçalho da seção */
+.section__head { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+.section__head h2 { font: var(--type-h2); letter-spacing: var(--tracking-h2); }
+.section__head > p:not(.section__label) { color: var(--color-text-secondary); max-width: 52ch; }
+
+/* Componente: número e categoria (fora do h2) */
+.section__label { display: flex; align-items: center; gap: var(--space-3); font-weight: 700; color: var(--color-text-accent); }
+.section__num { font-size: 1.25rem; font-weight: 800; }
+.section__num::after {
+  content: ""; display: inline-block; width: 40px; height: 1px; margin-left: var(--space-3);
+  background: var(--brand-pink); vertical-align: middle;
+}
+
+@media (min-width: 1024px) {
+  .section__grid { grid-template-columns: 4fr 8fr; column-gap: var(--space-7); align-items: start; }
+  .section__head { position: sticky; top: calc(var(--header-h) + var(--space-6)); }
+}
+/* FIM: 6. SEÇÕES */
+
+
+/* =====================================================================
+   INÍCIO: 7. CARDS
+   Os cards de uma linha têm sempre a mesma altura: os detalhes abrem em
+   janela, então nenhum card fica esticado e vazio.
+   ===================================================================== */
+.cards { display: grid; gap: var(--space-4); }
+
+/* 2 cards: lado a lado a partir de 600px.
+   3 cards: uma coluna até 719px e 3 colunas a partir de 720px,
+   para nunca sobrar um card sozinho e esticado numa linha. */
+@media (min-width: 600px) {
+  .cards--2 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 720px) {
+  .cards--3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+.card {
+  display: flex; flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-wine); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-card);
+  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), background-color var(--dur-base);
+}
+.card:hover, .card:focus-within { border-color: var(--brand-pink); box-shadow: var(--shadow-card), var(--glow-accent); background: var(--color-surface-raised); }
+
+/* Componente: imagem do card */
+.card__media { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--ink-950); border-bottom: 1px solid var(--color-border-subtle); }
+.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
+.card__media--contain { display: grid; place-items: center; padding: var(--space-5); }
+.card__media--contain img { object-fit: contain; }
+/* Componente: logo principal em destaque. O brilho fica na própria imagem
+   (não no card): contorno claro + halo rosa, para o rosa não sumir no preto */
+.card__media--logo { padding: var(--space-3); }
+.card__media--logo img {
+  filter:
+    brightness(1.35) saturate(1.15)
+    drop-shadow(0 0 1px rgb(255 255 255 / .85))
+    drop-shadow(0 0 3px rgb(255 92 158 / .95))
+    drop-shadow(0 0 12px rgb(229 28 120 / .8));
+}
+
+/* Componente: amostra tipográfica (fonte + logo de referência, com rótulos) */
+.card__media--type {
+  aspect-ratio: auto; min-height: 0;
+  display: grid; gap: var(--space-3); align-content: center;
+  padding: var(--space-4);
+}
+.type-sample { display: grid; gap: var(--space-1); justify-items: center; }
+.type-sample img { width: 100%; max-height: 44px; object-fit: contain; }
+.type-sample--ref { padding-top: var(--space-3); border-top: 1px solid var(--color-border-subtle); }
+.type-sample--ref img { max-height: 36px; filter: invert(1) brightness(.92); } /* logo preto: invertido só na miniatura */
+.type-sample figcaption { font: var(--type-caption); font-size: .75rem; color: var(--color-text-muted); text-align: center; }
+.card:hover .card__media img { transform: scale(1.03); }
+
+.card__media img.img-captions { object-position: 50% 42%; } /* mostra as legendas no card */
+
+/* Componente: amostras da paleta */
+.card__media--swatches { display: grid; place-items: center; padding: var(--space-4); }
+.swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); width: 100%; max-width: 320px; }
+.swatches li { display: flex; flex-direction: column; gap: var(--space-2); align-items: center; }
+.swatch { width: 100%; aspect-ratio: 3 / 4; border-radius: var(--radius-md); background: var(--c); border: 1px solid var(--ink-600); }
+.swatches code { font-size: .6875rem; color: var(--color-text-muted); font-family: var(--font-ui); font-weight: 600; }
+.card__media--swatches { container-type: inline-size; }
+/* Card estreito (desktop 1024–1279px): os códigos saem da vista, mas
+   continuam disponíveis para leitores de tela */
+@container (max-width: 240px) {
+  .swatches { gap: var(--space-1); }
+  .swatches code {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+}
+
+/* Componente: texto do card */
+.card__body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); padding: var(--space-5); flex: 1; }
+.card__body h3 { font: var(--type-h3); }
+.card__body > p { color: var(--color-text-secondary); font-size: .9375rem; }
+.card__body .link-action { margin-top: auto; }
+/* FIM: 7. CARDS */
+
+
+/* =====================================================================
+   INÍCIO: 8. APRENDIZADOS E CHAMADA DO CURRÍCULO
+   ===================================================================== */
+.learnings {
+  border-radius: var(--radius-lg); border: 1px solid var(--color-border-wine);
+  background: linear-gradient(135deg, var(--color-surface-wine), var(--color-surface));
+  padding-inline: var(--space-5);
+}
+.learning { display: grid; grid-template-columns: 32px 1fr; gap: var(--space-4); padding-block: var(--space-5); align-items: start; }
+.learning + .learning { border-top: 1px solid var(--color-border-wine); }
+.learning__icon { stroke: var(--color-text-accent); }
+.learning h3 { font: var(--type-h3); font-size: 1rem; color: var(--color-text-accent); margin-bottom: var(--space-1); }
+
+/* Componente: chamada do currículo */
+.cv-cta {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4);
+  padding: var(--space-5); border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-border-wine);
+}
+.cv-cta p { color: var(--color-text-secondary); }
+
+@media (min-width: 768px) {
+  .learnings { padding-inline: var(--space-6); }
+  .learning { grid-template-columns: 40px 1fr; gap: var(--space-5); padding-block: var(--space-6); }
+  .cv-cta { flex-direction: row; align-items: center; justify-content: space-between; padding: var(--space-5) var(--space-6); }
+}
+@media (min-width: 1024px) {
+  .section__grid > .cv-cta { grid-column: 2; }
+}
+/* FIM: 8. APRENDIZADOS E CHAMADA DO CURRÍCULO */
+
+
+/* =====================================================================
+   INÍCIO: 9. FOOTER
+   Celular e tablet: no fim da página. Desktop: sticky, sempre visível
+   na base da tela, compacto (64px) para não roubar espaço de leitura.
+   ===================================================================== */
+.site-footer {
+  background: rgb(10 10 10 / .96);
+  border-top: 1px solid var(--color-border-subtle);
+  padding-block: var(--space-5);
+}
+.footer-inner { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* Componente: links do footer */
+.footer-links { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); }
+.footer-links a { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--target); font-size: .9375rem; }
+.footer-icon { flex: none; width: 16px; height: 16px; fill: #888888; } /* ícone cinza médio (decorativo), contraste 5,6:1 com o fundo do rodapé */
+
+/* Componente: assinatura */
+.footer-meta { display: flex; gap: var(--space-4); font: var(--type-caption); color: var(--color-text-muted); }
+
+@media (min-width: 1024px) {
+  .site-footer {
+    position: sticky; bottom: 0; z-index: 40;
+    min-height: var(--footer-h); padding-block: 0;
+    backdrop-filter: blur(10px);
+  }
+  .footer-inner { min-height: var(--footer-h); flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-5); }
+  .footer-links { gap: 0 var(--space-4); }
+  .footer-links a { font-size: .875rem; }
+}
+/* FIM: 9. FOOTER */
+
+
+/* =====================================================================
+   INÍCIO: 10. JANELAS DE DETALHES E IMAGEM AMPLIADA
+   Celular: janela ocupa a tela toda. A partir de 768px: janela central.
+   ===================================================================== */
+
+/* Componente: janela de detalhes */
+.modal {
+  width: 100%; max-width: 100%; height: 100%; max-height: 100%;
+  margin: 0; padding: 0;
+  border: 0; background: var(--color-bg-deep); color: var(--color-text);
+  overflow: hidden;
+}
+.modal[open] { display: flex; flex-direction: column; }
+.modal::backdrop { background: rgb(0 0 0 / .8); }
+
+.modal__head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border-wine);
+  background: var(--color-surface-wine);
+}
+.modal__overline { font: var(--type-overline); letter-spacing: .1em; text-transform: uppercase; color: var(--color-text-accent); margin-bottom: var(--space-2); }
+.modal__title { font: 800 clamp(1.375rem, 1.2rem + 1vw, 1.75rem)/1.15 var(--font-ui); letter-spacing: var(--tracking-h2); }
+
+.modal__close, .lightbox__close {
+  flex: none; width: 48px; height: 48px; border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-control);
+  font-size: 1.75rem; line-height: 1;
+  transition: background-color var(--dur-fast);
+}
+.modal__close:hover, .lightbox__close:hover { background: var(--color-action); }
+
+.modal__body {
+  display: grid; gap: var(--space-5);
+  padding: var(--space-5);
+  overflow-y: auto; overscroll-behavior: contain;
+}
+.modal__body > p { color: var(--color-text-secondary); }
+
+@media (min-width: 768px) {
+  .modal {
+    width: min(760px, calc(100vw - 64px)); height: fit-content; /* dialog fixo com inset 0: "auto" esticaria */ max-height: min(86vh, 860px);
+    margin: auto; border: 1px solid var(--color-border-wine); border-radius: var(--radius-lg);
+    box-shadow: 0 30px 80px -20px rgb(0 0 0 / .9), var(--glow-accent);
+  }
+  .modal__head { padding: var(--space-5) var(--space-6); }
+  .modal__body { padding: var(--space-6); }
+}
+
+/* Componente: lista de informações (Como o projeto começou) */
+.info-list { display: grid; gap: var(--space-5); }
+.info-list dt { font-weight: 700; color: var(--color-text-accent); margin-bottom: var(--space-1); }
+.info-list dd { color: var(--color-text-secondary); }
+
+/* Componente: pares Problema → Solução */
+.ps { display: grid; gap: var(--space-3); }
+.ps > div { display: grid; grid-template-columns: 84px 1fr; gap: var(--space-3); }
+.ps dt { font-weight: 700; color: var(--color-text-accent); }
+.ps dd { color: var(--color-text-secondary); }
+.ps > div:nth-child(2n) { padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-subtle); }
+
+/* Componente: lista com marcador rosa */
+.bullets { display: grid; gap: var(--space-3); color: var(--color-text-secondary); }
+.bullets li { position: relative; padding-left: var(--space-5); }
+.bullets li::before { content: ""; position: absolute; left: 4px; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-pink); }
+
+/* Componente: galeria de miniaturas ampliáveis */
+.gallery { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+@media (min-width: 420px) { .gallery, .gallery--2 { grid-template-columns: repeat(2, 1fr); } }
+
+.zoom {
+  display: block; width: 100%; aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md); overflow: hidden;
+  background: var(--ink-850); border: 1px solid var(--color-border-subtle);
+  cursor: zoom-in; transition: border-color var(--dur-fast);
+}
+.zoom img { width: 100%; height: 100%; object-fit: contain; }
+.zoom:hover { border-color: var(--brand-pink); }
+.zoom--light { background: var(--mauve-300); }
+
+.caption { margin-top: var(--space-2); font: var(--type-caption); color: var(--color-text-muted); }
+.tag {
+  display: block; width: fit-content; margin-bottom: var(--space-1); padding: 2px var(--space-2);
+  border-radius: var(--radius-sm); border: 1px solid var(--color-border-wine);
+  font-size: .75rem; color: var(--color-text-accent);
+}
+
+/* Componente: imagem ampliada */
+.lightbox {
+  margin: auto; padding: 0;
+  max-width: min(1100px, 94vw); max-height: 90vh;
+  border: 1px solid var(--color-border-wine); border-radius: var(--radius-lg);
+  background: var(--ink-950); color: var(--color-text); overflow: hidden;
+}
+.lightbox::backdrop { background: rgb(0 0 0 / .88); }
+.lightbox__img { max-width: 100%; max-height: 90vh; object-fit: contain; }
+.lightbox__close { position: absolute; top: var(--space-2); right: var(--space-2); background: rgb(10 10 10 / .85); }
+/* FIM: 10. JANELAS DE DETALHES E IMAGEM AMPLIADA */
+
+
+/* =====================================================================
+   INÍCIO: 11. SETA DE VOLTAR AO TOPO (componente reutilizável)
+   Para usar em outra página: copie o <button class="back-to-top">,
+   esta seção do CSS e a seção 6 do main.js.
+   - Centralizada na base da tela (acima do footer sticky no desktop).
+   - Escondida por padrão; aparece com fade ao fim de uma section.
+   - Rosa de ação + seta branca (5,8:1) + anel escuro: destaca-se do
+     texto, das imagens rosa e do fundo.
+   ===================================================================== */
+.back-to-top {
+  position: fixed; left: 50%; z-index: 45;
+  bottom: calc(var(--footer-h) + var(--space-5) + env(safe-area-inset-bottom, 0px));
+  width: var(--to-top-size); height: var(--to-top-size);
+  display: grid; place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--color-action); color: var(--brand-white);
+  box-shadow:
+    0 0 0 3px rgb(10 10 10 / .9),            /* anel escuro: separa do conteúdo */
+    0 0 0 4px rgb(255 92 158 / .55),         /* fio rosa claro: acabamento */
+    0 12px 28px -8px rgb(229 28 120 / .6);   /* brilho */
+  opacity: 0; visibility: hidden;
+  transform: translate(-50%, 8px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out),
+    visibility 0s linear var(--dur-slow), background-color var(--dur-fast);
+}
+.back-to-top svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.back-to-top.is-visible {
+  opacity: 1; visibility: visible; transform: translate(-50%, 0);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out), visibility 0s, background-color var(--dur-fast);
+}
+.back-to-top:hover { background: var(--color-action-hover); transform: translate(-50%, -2px); }
+.back-to-top:active { background: var(--color-action-active); }
+.back-to-top:focus-visible { outline: 2px solid var(--brand-white); outline-offset: 5px; border-radius: var(--radius-full); }
+
+/* Componente: marcador invisível do fim de cada section (criado pelo main.js) */
+.section-end { display: block; height: 1px; }
+
+/* Escondida enquanto o menu mobile está aberto */
+body.is-locked .back-to-top { opacity: 0; visibility: hidden; }
+/* FIM: 11. SETA DE VOLTAR AO TOPO */
+
+
+/* =====================================================================
+   INÍCIO: 12. MOVIMENTO E GOOGLE TRADUTOR
+   ===================================================================== */
+
+/* Rolagem suave só para quem não pediu menos movimento */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+
+  /* Componente: logo do hero flutuando devagar (mesmo movimento do estudo de caso original) */
+  .hero__logo { animation: float 6s ease-in-out infinite; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* Componente: entrada suave dos blocos (classe adicionada pelo main.js) */
+  .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
+  .js .reveal.is-visible { opacity: 1; transform: none; }
+}
+
+/* Movimento reduzido: sem animações, sem zoom e sem deslocamentos (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+  .card:hover .card__media img { transform: none; }
+}
+
+/* A barra do Google Tradutor não empurra a página nem cobre o header */
+body { top: 0 !important; }
+.goog-te-banner-frame, .skiptranslate > iframe, #goog-gt-tt { display: none !important; }
+/* FIM: 12. MOVIMENTO E GOOGLE TRADUTOR */

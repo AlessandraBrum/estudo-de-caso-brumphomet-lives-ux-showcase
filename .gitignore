@@ -1,0 +1,17 @@
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Pastas de configuração do Editor de Código (VS Code)
+.vscode/
+
+# Arquivos de variáveis de ambiente / chaves de API (se houver)
+.env
+.env.local
+
+# Logs de erro (gerados se você usar alguma ferramenta de terminal)
+*.log
+
+# Downloads e materiais de apoio guardados só no computador
+arquivos-pessoais/

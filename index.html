@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<!-- =====================================================================
+     BRUMPHOMET LIVES · Estudo de caso v2 (compacto, focado em UX)
+     Direção: BRIEF-UX.md · Acessibilidade: PROMPT-ACESSIBILIDADE.md
+     Responsividade: PROMPT-RESPONSIVIDADE.md
+     Imagens: referenciadas do estudo de caso original
+     (https://brumphomet-lives.vercel.app/assets/img/).
+     ===================================================================== -->
+
+<!-- INÍCIO: HEAD -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Brumphomet Lives — Estudo de caso (versão compacta) | Alessandra Brum</title>
+  <meta name="description"
+    content="Estudo de caso de UX/UI: Do zero à monetização: Construção de uma comunidade através de transmissões ao vivo na Twitch - Canal "
+    Brumphomet">
+  <meta name="theme-color" content="#111111">
+  <link rel="icon" href="https://brumphomet-lives.vercel.app/assets/icons/favicon.png">
+
+  <!-- Fonte Manrope (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<!-- FIM: HEAD -->
+
+<body>
+
+  <!-- INÍCIO: LINK PULAR PARA O CONTEÚDO (primeiro item do Tab, WCAG 2.4.1) -->
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <!-- FIM: LINK PULAR PARA O CONTEÚDO -->
+
+  <!-- INÍCIO: HEADER (sticky em todas as larguras) -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Componente: marca (volta ao topo da página) -->
+      <a class="brand" href="#topo">
+        <span class="brand__kicker">Estudo de caso</span>
+        <span class="brand__name" translate="no">Alessandra Brum</span>
+      </a>
+
+      <!-- Componente: fundo escurecido do menu mobile (clicar nele fecha o menu) -->
+      <div class="nav-scrim" id="navScrim" hidden></div>
+
+      <!-- INÍCIO: MENU (painel lateral direito no mobile, barra horizontal no desktop) -->
+      <div class="nav-panel" id="siteNav">
+
+        <!-- Componente: cabeçalho do painel mobile, com botão Fechar -->
+        <div class="nav-panel__head">
+          <span class="nav-panel__title" translate="no">Menu</span>
+          <button class="nav-close" id="navClose" type="button">
+            <span aria-hidden="true">×</span><span class="sr-only">Fechar menu</span>
+          </button>
+        </div>
+
+        <!-- Componente: links das seções -->
+        <nav aria-label="Seções do estudo de caso">
+          <ul class="nav-list">
+            <li><a href="#visao-geral">Visão geral</a></li>
+            <li><a href="#identidade">Identidade</a></li>
+            <li><a href="#solucoes">Soluções</a></li>
+            <li><a href="#resultados">Resultados</a></li>
+            <li><a href="#aprendizados">Aprendizados</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- FIM: MENU -->
+
+      <!-- Componente: seletor de idioma no próprio header sticky, em todas as larguras (Google Tradutor, ver main.js) -->
+      <div class="lang-switch" role="group" aria-label="Idioma / Language / Sprache" translate="no">
+        <button type="button" data-lang="pt" lang="pt-BR" aria-pressed="true">PT<span class="sr-only">,
+            Português</span></button>
+        <button type="button" data-lang="en" lang="en" aria-pressed="false">EN<span class="sr-only">,
+            English</span></button>
+        <button type="button" data-lang="de" lang="de" aria-pressed="false">DE<span class="sr-only">,
+            Deutsch</span></button>
+      </div>
+
+      <!-- Componente: botão hambúrguer (só abaixo de 1024px, alinhado à direita) -->
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav">
+        <span class="menu-toggle__label" translate="no">Menu</span>
+        <span class="menu-toggle__icon" aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </header>
+  <!-- FIM: HEADER -->
+
+  <!-- INÍCIO: CONTEÚDO PRINCIPAL -->
+  <main id="main" tabindex="-1">
+
+    <!-- INÍCIO: HERO -->
+    <section class="hero" id="topo" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+
+        <!-- Componente: texto do hero -->
+        <div class="hero__text">
+          <p class="overline"><span translate="no">Brumphomet</span> · UX/UI</p>
+          <h1 id="hero-title" class="hero__title" tabindex="-1">Do zero à <span class="hero__accent">monetização</span>
+          </h1>
+          <p class="lead">A construção de uma comunidade através de <span translate="no" data-i18n-en=" live streams " data-i18n-de=" Live Streams ">transmissões ao vivo</span> na Twitch - Canal
+            "Brumphomet"</span>.
+          </p>
+          <a class="btn btn--primary" href="#visao-geral">Conhecer o projeto <span aria-hidden="true">→</span></a>
+
+          <!-- Componente: aviso de versão resumida, com link para o estudo de caso completo -->
+          <aside class="version-note" aria-label="Sobre esta versão">
+            <p class="version-note__tag">Versão resumida</p>
+            <p class="version-note__text">Este é um recorte focado em UX. Os vídeos, os cortes das lives e todos os
+              bastidores estão no
+              <a href="https://brumphomet-lives.vercel.app/" target="_blank" rel="noopener">estudo de caso completo.<span
+                  class="sr-only"> (abre em nova aba)</span> <span aria-hidden="true">↗</span></a>
+            </p>
+          </aside>
+        </div>
+
+        <!-- Componente: logo flutuando devagar + registro da live em moldura de notebook (CSS) -->
+        <div class="hero__media">
+          <img class="hero__logo" src="https://brumphomet-lives.vercel.app/assets/img/logocommorcegos1.png"
+            alt="Logotipo Brumphomet, em lettering gótico com morcegos" width="620" height="200">
+          <!-- Componente: mockup de notebook em perspectiva 3/4, feito só em CSS
+               (tampa com borda fina, câmera, reflexo no vidro, base com teclado e trackpad).
+               Direção: PROMPT-MOCKUP-NOTEBOOK.md -->
+          <div class="laptop-scene">
+            <div class="laptop">
+              <div class="laptop__lid">
+                <span class="laptop__camera" aria-hidden="true"></span>
+                <div class="laptop__screen">
+                  <!-- Registro da live com legendas automáticas (Stream-CC) -->
+                  <img src="assets/hero-live-legendas.jpg"
+                    alt="Registro de uma live: a streamer de headphone olha o celular, com legendas automáticas do Stream-CC na parte de baixo da tela"
+                    width="607" height="607">
+                </div>
+              </div>
+              <!-- Base deitada: teclado e trackpad (decorativos) -->
+              <div class="laptop__deck" aria-hidden="true">
+                <span class="laptop__keyboard"></span>
+                <span class="laptop__trackpad"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Componente: faixa de informações do projeto -->
+      <div class="facts-band">
+        <dl class="container facts">
+          <div class="fact">
+            <svg class="fact__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5V5.5Z M12 6v13.5" />
+            </svg>
+            <dt>Campo de estudo</dt>
+            <dd>UX/UI Design</dd>
+          </div>
+          <div class="fact">
+            <svg class="fact__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3-3 8-8M3 21l6-6M6.5 3.5 10 7l-3 3-3.5-3.5" />
+            </svg>
+            <dt>Escopo</dt>
+            <dd>Identidade visual, overlay e integração de ferramentas</dd>
+          </div>
+          <div class="fact">
+            <svg class="fact__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+            </svg>
+            <dt>Autoria</dt>
+            <dd translate="no">Alessandra Brum</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+    <!-- FIM: HERO -->
+
+    <!-- INÍCIO: SEÇÃO 01 · VISÃO GERAL (o problema) -->
+    <section class="section" id="visao-geral" aria-labelledby="t-visao">
+      <div class="container section__grid">
+
+        <!-- Componente: cabeçalho da seção -->
+        <header class="section__head">
+          <p class="section__label"><span class="section__num">01</span> Visão geral</p>
+          <h2 id="t-visao">Começar sem orçamento.</h2>
+          <p>O desafio era criar a identidade visual e o overlay do canal sem orçamento inicial, de modo que
+            refletissem minha personalidade, que une o delicado e o intenso.</p>
+          <button class="btn btn--secondary" type="button" aria-haspopup="dialog" data-open="dlg-visao">
+            Como o projeto começou <span aria-hidden="true">+</span>
+          </button>
+        </header>
+
+        <!-- Componente: cards da seção -->
+        <div class="cards cards--2">
+          <article class="card">
+            <div class="card__media">
+              <img src="https://brumphomet-lives.vercel.app/assets/img/pagina-atual-2026.jpg"
+                alt="Estado atual da página do projeto, setembro de 2026." loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3>Contexto</h3>
+              <p>Desenvolvimento do conceito visual e do overlay do canal <span translate="no">Brumphomet</span> na
+                <span translate="no">Twitch</span>.
+              </p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__media">
+              <img src="https://brumphomet-lives.vercel.app/assets/img/printliveonline.png"
+                alt="Tela de abertura da live" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3>Direção visual</h3>
+              <p>Rosa e preto para explorar o contraste entre o delicado e o intenso.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- FIM: SEÇÃO 01 · VISÃO GERAL -->
+
+    <!-- INÍCIO: SEÇÃO 02 · IDENTIDADE (o processo) -->
+    <section class="section" id="identidade" aria-labelledby="t-identidade">
+      <div class="container section__grid">
+
+        <!-- Componente: cabeçalho da seção -->
+        <header class="section__head">
+          <p class="section__label"><span class="section__num">02</span> Identidade</p>
+          <h2 id="t-identidade">O delicado e o intenso.</h2>
+          <p>Uma identidade visual inspirada no rock, no black metal e na minha personalidade.</p>
+          <button class="btn btn--secondary" type="button" aria-haspopup="dialog" data-open="dlg-identidade">
+            Ver referências e telas de aviso <span aria-hidden="true">+</span>
+          </button>
+        </header>
+
+        <!-- Componente: cards de identidade (logo, paleta, tipografia) -->
+        <div class="cards cards--3">
+          <article class="card">
+            <!-- Componente: logo com brilho na própria imagem, para o rosa não sumir no preto -->
+            <div class="card__media card__media--contain card__media--logo">
+              <img src="https://brumphomet-lives.vercel.app/assets/img/logocommorcegos1.png"
+                alt="Logotipo Brumphomet, em lettering gótico com morcegos" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3>Logo principal</h3>
+              <p>Identidade visual do canal <span translate="no">Brumphomet</span>.</p>
+            </div>
+          </article>
+          <article class="card">
+            <!-- Componente: amostras da paleta -->
+            <div class="card__media card__media--swatches">
+              <ul class="swatches" aria-label="Paleta de cores" translate="no">
+                <li><span class="swatch" style="--c:#111111"></span><code>#111111</code></li>
+                <li><span class="swatch" style="--c:#860025"></span><code>#860025</code></li>
+                <li><span class="swatch" style="--c:#E3004A"></span><code>#E3004A</code></li>
+                <li><span class="swatch" style="--c:#FFFFFF"></span><code>#FFFFFF</code></li>
+              </ul>
+            </div>
+            <div class="card__body">
+              <h3>Paleta de cores</h3>
+              <p>Preto, vinho, rosa e branco para o contraste entre o delicado e o intenso.</p>
+            </div>
+          </article>
+          <article class="card">
+            <!-- Componente: amostra da fonte + logo de referência, cada um com rótulo,
+                 para não parecer que o nome da banda foi escrito com a fonte -->
+            <div class="card__media card__media--type">
+              <figure class="type-sample">
+                <img src="assets/artdystopia-ii.png"
+                  alt="Amostra da fonte ArtDystopia II: a palavra Art Dystopia II em letras góticas pontiagudas"
+                  loading="lazy">
+                <figcaption>Fonte: <span translate="no">ArtDystopia II</span></figcaption>
+              </figure>
+              <figure class="type-sample type-sample--ref">
+                <img src="https://brumphomet-lives.vercel.app/assets/img/logorottingchrist.png"
+                  alt="Logotipo da banda Rotting Christ: letras irregulares e ramificadas, como raízes" loading="lazy">
+                <figcaption>Referência: logo da banda <span translate="no">Rotting Christ</span></figcaption>
+              </figure>
+            </div>
+            <div class="card__body">
+              <h3>Tipografia</h3>
+              <p>Fonte gratuita <span translate="no">ArtDystopia II</span>, inspirada em logos de black metal como o da
+                banda <span translate="no">Rotting Christ</span>.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- FIM: SEÇÃO 02 · IDENTIDADE -->
+
+    <!-- INÍCIO: SEÇÃO 03 · SOLUÇÕES -->
+    <section class="section" id="solucoes" aria-labelledby="t-solucoes">
+      <div class="container section__grid">
+
+        <!-- Componente: cabeçalho da seção -->
+        <header class="section__head">
+          <p class="section__label"><span class="section__num">03</span> Soluções</p>
+          <h2 id="t-solucoes">Começar, transmitir e interagir.</h2>
+          <p>Soluções simples e acessíveis para iniciar as transmissões, criar uma experiência única e aproximar a
+            comunidade.</p>
+        </header>
+
+        <!-- Componente: cards de solução (os detalhes abrem em janela, o card não cresce) -->
+        <div class="cards cards--2">
+          <article class="card">
+            <div class="card__media">
+              <img src="https://brumphomet-lives.vercel.app/assets/img/problema-sem-webcam.jpg"
+                alt="Screenshot do site do software Iriun webcam" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3 id="c-zero">Começando do zero</h3>
+              <p>Celular como webcam e teclado numérico como controle provisório.</p>
+              <button class="link-action" type="button" aria-haspopup="dialog" data-open="dlg-zero">
+                Ver detalhes<span class="sr-only"> de Começando do zero</span> <span aria-hidden="true">+</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__media">
+              <img src="https://brumphomet-lives.vercel.app/assets/img/organizacao-camadas-1.jpg"
+                alt="Boas práticas através de organização de camadas" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3>Organização das transmissões</h3>
+              <p>Cenas, camadas e filtros no <span translate="no">Streamlabs</span> para exercitar boas práticas.</p>
+              <button class="link-action" type="button" aria-haspopup="dialog" data-open="dlg-org">
+                Ver detalhes<span class="sr-only"> de Organização das transmissões</span> <span
+                  aria-hidden="true">+</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__media">
+              <!-- Registro azulado com legendas (o de fundo laranja já está no topo) -->
+              <img class="img-captions" src="https://brumphomet-lives.vercel.app/assets/img/closedcaptions2.jpg"
+                alt="Registro da live com closed Captions" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3>Interatividade e acessibilidade</h3>
+              <p>Resgates com pontos do canal e legendas automáticas com <span translate="no">Stream-CC</span>.</p>
+              <button class="link-action" type="button" aria-haspopup="dialog" data-open="dlg-inter">
+                Ver detalhes<span class="sr-only"> de Interatividade e acessibilidade</span> <span
+                  aria-hidden="true">+</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__media card__media--contain">
+              <img src="https://brumphomet-lives.vercel.app/assets/img/logojbrumfm.png"
+                alt="Logo da Rádio Fictícia JBrum FM" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3 translate="no">JBrum FM</h3>
+              <p>Quadro do canal com pedidos musicais, videoclipes e vinhetas nas lives.</p>
+              <button class="link-action" type="button" aria-haspopup="dialog" data-open="dlg-fm">
+                Ver detalhes<span class="sr-only"> do quadro JBrum FM</span> <span aria-hidden="true">+</span>
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- FIM: SEÇÃO 03 · SOLUÇÕES -->
+
+    <!-- INÍCIO: SEÇÃO 04 · RESULTADOS -->
+    <section class="section section--wine" id="resultados" aria-labelledby="t-resultados">
+      <div class="container section__grid">
+
+        <!-- Componente: cabeçalho da seção -->
+        <header class="section__head">
+          <p class="section__label"><span class="section__num">04</span> Resultados</p>
+          <h2 id="t-resultados">Retorno e reinvestimento.</h2>
+          <p>O canal passou a gerar retorno financeiro, permitindo investir em equipamentos e melhorar a qualidade das
+            transmissões.</p>
+        </header>
+
+        <!-- Componente: cards de resultado -->
+        <div class="cards cards--2">
+          <article class="card">
+            <div class="card__body">
+              <h3>Doações e pagamentos</h3>
+              <p>Para doações por parte dos usuários, utilizo a plataforma <span translate="no">LivePIX</span> para não
+                expor meus dados pessoais como destinatária de transferências via <span translate="no">PIX</span>. A
+                plataforma gerencia as doações dos espectadores e exibe as mensagens na tela em tempo real. Já os
+                pagamentos da <span translate="no">Twitch</span> são feitos em dólar, como acordado no contrato de
+                Streamer Afiliado.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__media">
+              <!-- Imagem trocável: assets/webcam-logitech-c920.jpg (ilustração da C920).
+                   Se o arquivo faltar, o main.js usa a imagem do site original (data-fallback). -->
+              <img src="assets/webcam-logitech-c920.jpg"
+                data-fallback="https://brumphomet-lives.vercel.app/assets/img/webcam-logitech-c920.jpg"
+                alt="Webcam Logitech C920" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h3>Reinvestimento</h3>
+              <p>Compra de webcam, microfone e <span translate="no">Stream Deck</span> com o retorno das lives.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- FIM: SEÇÃO 04 · RESULTADOS -->
+
+    <!-- INÍCIO: SEÇÃO 05 · APRENDIZADOS -->
+    <section class="section" id="aprendizados" aria-labelledby="t-aprendizados">
+      <div class="container section__grid">
+
+        <!-- Componente: cabeçalho da seção -->
+        <header class="section__head">
+          <p class="section__label"><span class="section__num">05</span> Aprendizados</p>
+          <h2 id="t-aprendizados">Ouvir e continuar ajustando.</h2>
+          <p>A experiência me mostrou a importância de escutar a comunidade e de que cuidado e planejamento levam a
+            bons resultados.</p>
+        </header>
+
+        <!-- Componente: lista de aprendizados -->
+        <ul class="learnings">
+          <li class="learning">
+            <svg class="learning__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5V5.5Z M12 6v13.5" />
+            </svg>
+            <div>
+              <h3>Processo</h3>
+              <p>Pesquisei, assisti a tutoriais, conversei com outros streamers e consultei os espectadores.</p>
+            </div>
+          </li>
+          <li class="learning">
+            <svg class="learning__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <circle cx="12" cy="12" r="5" />
+              <circle cx="12" cy="12" r="1" />
+            </svg>
+            <div>
+              <h3>Próximos passos</h3>
+              <p>Continuar ramificando minha presença em outras redes sociais e explorar o nicho de <span
+                  translate="no"><i>games</i></span>, que está super em alta no Brasil, como eu esclareço a respeito na
+                <a href="https://brumphomet-lives.vercel.app/" target="_blank">versão completa</a> deste estudo</span>.
+              </p>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Componente: chamada para baixar o currículo -->
+        <div class="cv-cta">
+          <p>Gostou do processo? Conheça minha trajetória completa.</p>
+          <!-- PDF local: o atributo download só funciona com arquivo do mesmo site -->
+          <a class="btn btn--primary" href="assets/Curriculo-Alessandra-Brum.pdf"
+            download="Curriculo-Alessandra-Brum.pdf">
+            Baixar currículo (PDF) <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- FIM: SEÇÃO 05 · APRENDIZADOS -->
+
+  </main>
+  <!-- FIM: CONTEÚDO PRINCIPAL -->
+
+  <!-- INÍCIO: SETA DE VOLTAR AO TOPO (componente reutilizável; ver main.js e style.css, seção 11) -->
+  <button class="back-to-top" id="backToTop" type="button" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 19V5M5 12l7-7 7 7" />
+    </svg>
+  </button>
+  <!-- FIM: SETA DE VOLTAR AO TOPO -->
+
+  <!-- INÍCIO: FOOTER (sticky no desktop, normal no celular) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+
+      <!-- Componente: assinatura -->
+      <p class="footer-meta"><span translate="no">Alessandra Brum · Brumphomet</span> <span>2026</span></p>
+
+      <!-- Componente: links de contato e redes -->
+      <nav class="footer-nav" aria-label="Contato e redes sociais">
+        <ul class="footer-links">
+          <!-- Cada link tem um ícone branco decorativo antes do texto (aria-hidden) -->
+          <li><a href="https://alessandrabrum.vercel.app/" target="_blank" rel="noopener">
+              <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10H4V5zm2 1v7h12V6H6zM1 17h22v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1z" />
+              </svg>
+              Portfólio<span class="sr-only"> (abre em nova aba)</span></a></li>
+          <li><a href="https://www.linkedin.com/in/alessandrabrum/" target="_blank" rel="noopener" translate="no">
+              <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.9-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.3c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z" />
+              </svg>
+              LinkedIn<span class="sr-only"> (abre em nova aba)</span></a></li>
+          <li><a href="https://github.com/AlessandraBrum" target="_blank" rel="noopener" translate="no">
+              <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1-1.5-1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.3 1.1 2.9.9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7c-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.9 1a10 10 0 0 1 5.2 0c2-1.3 2.9-1 2.9-1 .6 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A10 10 0 0 0 12 2z" />
+              </svg>
+              GitHub<span class="sr-only"> (abre em nova aba)</span></a></li>
+          <li><a href="https://www.behance.net/alessandrabrum" target="_blank" rel="noopener" translate="no">
+              <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M4 5h6.5a3.5 3.5 0 0 1 2.9 5.4A3.6 3.6 0 0 1 15 14a3.9 3.9 0 0 1-4 4H4V5zm2.2 2v3.3h3.7a1.65 1.65 0 0 0 0-3.3H6.2zm0 5.3V17h4a2 2 0 0 0 0-4h-4zM16 8.6h5.4v1.3H16zM23 15a4.2 4.2 0 0 1-4.2 3.3c-2.6 0-4.4-1.8-4.4-4.4 0-2.5 1.8-4.5 4.3-4.5 2.8 0 4.3 2.1 4.3 5H16.6a2 2 0 0 0 2.1 1.9 2 2 0 0 0 1.8-1zm-2.2-2.4a1.9 1.9 0 0 0-1.9-1.7 1.9 1.9 0 0 0-2 1.7h3.9z" />
+              </svg>
+              Behance<span class="sr-only"> (abre em nova aba)</span></a></li>
+          <li><a href="mailto:alessandrabrumcontato@gmail.com">
+              <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M2 5h20v14H2zm2 2v.5l8 5.5 8-5.5V7l-8 5.5z" />
+              </svg>
+              E-mail</a></li>
+          <li><a href="https://brumphomet-lives.vercel.app/" target="_blank" rel="noopener">
+              <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <!-- Ícone de morceguinho -->
+                <path d="M1 6.6 10.8 8.8 11.1 6.2 11.8 8.3H12.2L12.9 6.2 13.2 8.8 23 6.6 21.5 9.5 21.3 11.2Q19.6 10.4 17.7 12.3 16 11.1 14.4 13L12 17.3 9.6 13Q8 11.1 6.3 12.3 4.4 10.4 2.7 11.2L2.5 9.5z" />
+              </svg>
+              Versão completa deste estudo<span class="sr-only"> (abre em nova aba)</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <!-- FIM: FOOTER -->
+
+  <!-- =====================================================================
+       INÍCIO: JANELAS DE DETALHES
+       <dialog> nativo: abre com showModal(), prende o foco, Esc fecha e o
+       foco volta ao botão que abriu. Os cards não crescem, então nenhum
+       card fica vazio ao lado de outro.
+       ===================================================================== -->
+
+  <!-- Janela: Como o projeto começou -->
+  <dialog class="modal" id="dlg-visao" aria-labelledby="dlg-visao-t">
+    <div class="modal__head">
+      <div>
+        <p class="modal__overline">01 · Visão geral</p>
+        <h3 class="modal__title" id="dlg-visao-t">Como o projeto começou</h3>
+      </div>
+      <button class="modal__close" type="button" data-close><span aria-hidden="true">×</span><span
+          class="sr-only">Fechar</span></button>
+    </div>
+    <div class="modal__body">
+      <dl class="info-list">
+        <div>
+          <dt>O nome</dt>
+          <dd><span translate="no">Brumphomet</span> une Brum, meu sobrenome, a <span translate="no">Baphomet</span>,
+            entidade ligada à alquimia e à renovação. O tema do canal é “<span lang="la">Solve et Coagula</span>”:
+            destruir para reconstruir, trabalhando com contrastes.</dd>
+        </div>
+        <div>
+          <dt>Ponto de partida</dt>
+          <dd>Orçamento zero, sem webcam e com o microfone integrado ao headphone como única entrada de áudio.</dd>
+        </div>
+        <div>
+          <dt>Motivação</dt>
+          <dd>Meu interesse por games me levou a enxergar a <span translate="no">Twitch</span> como um espaço para
+            compartilhar experiências e criar conexões, transformando um hobby em produção de conteúdo e construção de
+            comunidade.</dd>
+        </div>
+      </dl>
+    </div>
+  </dialog>
+
+  <!-- Janela: Referências e telas de aviso -->
+  <dialog class="modal" id="dlg-identidade" aria-labelledby="dlg-identidade-t">
+    <div class="modal__head">
+      <div>
+        <p class="modal__overline">02 · Identidade</p>
+        <h3 class="modal__title" id="dlg-identidade-t">Referências e telas de aviso</h3>
+      </div>
+      <button class="modal__close" type="button" data-close><span aria-hidden="true">×</span><span
+          class="sr-only">Fechar</span></button>
+    </div>
+    <div class="modal__body">
+      <p>O lettering da marca usa a fonte gratuita <span translate="no">ArtDystopia II</span>, com traços que lembram
+        chamas, rasgos e raízes, inspirada em logotipos de black metal.</p>
+      <!-- Componente: galeria com miniaturas ampliáveis -->
+      <ul class="gallery">
+        <li>
+          <button class="zoom zoom--light" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/logodarkfuneral.png"
+            aria-label="Ampliar: logo da banda Dark Funeral">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/logodarkfuneral.png"
+              alt="Logotipo da banda Dark Funeral: letras góticas dentro de um pentagrama com chamas e cruzes invertidas"
+              loading="lazy">
+          </button>
+          <p class="caption">Referência: <span translate="no">Dark Funeral</span> (black metal)</p>
+        </li>
+        <li>
+          <button class="zoom zoom--light" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/logorottingchrist.png"
+            aria-label="Ampliar: logo da banda Rotting Christ">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/logorottingchrist.png"
+              alt="Logotipo da banda Rotting Christ: letras irregulares e ramificadas, como raízes" loading="lazy">
+          </button>
+          <p class="caption">Referência: <span translate="no">Rotting Christ</span> (black metal)</p>
+        </li>
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/printliveonline.png"
+            aria-label="Ampliar: tela de espera da live">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/printliveonline.png"
+              alt="Tela de espera da live: logotipo Brumphomet em vermelho e rosa sobre fundo de fumaça escura, com a frase Começaremos em breve"
+              loading="lazy">
+          </button>
+          <p class="caption">Tela de espera: “Começaremos em breve”</p>
+        </li>
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/printliveoffline.png"
+            aria-label="Ampliar: tela de encerramento da live">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/printliveoffline.png"
+              alt="Tela de encerramento da live: logotipo Brumphomet sobre fundo de fumaça escura, com a palavra Offline"
+              loading="lazy">
+          </button>
+          <p class="caption">Tela de encerramento: “<span translate="no">Offline</span>”</p>
+        </li>
+      </ul>
+    </div>
+  </dialog>
+
+  <!-- Janela: Começando do zero -->
+  <dialog class="modal" id="dlg-zero" aria-labelledby="dlg-zero-t">
+    <div class="modal__head">
+      <div>
+        <p class="modal__overline">03 · Soluções</p>
+        <h3 class="modal__title" id="dlg-zero-t">Começando do zero</h3>
+      </div>
+      <button class="modal__close" type="button" data-close><span aria-hidden="true">×</span><span
+          class="sr-only">Fechar</span></button>
+    </div>
+    <div class="modal__body">
+      <!-- Componente: pares Problema → Solução -->
+      <dl class="ps">
+        <div>
+          <dt>Problema</dt>
+          <dd>Eu não tinha webcam.</dd>
+        </div>
+        <div>
+          <dt>Solução</dt>
+          <dd>O app gratuito <span translate="no">Iriun Webcam</span> faz o computador reconhecer a câmera do celular.
+          </dd>
+        </div>
+        <div>
+          <dt>Problema</dt>
+          <dd>Eu não tinha <span translate="no">Stream Deck</span>.</dd>
+        </div>
+        <div>
+          <dt>Solução</dt>
+          <dd>Atalhos no <span translate="no">Streamlabs</span> transformaram um teclado numérico em um <span
+              translate="no">Stream Deck</span> provisório.</dd>
+        </div>
+      </dl>
+      <ul class="gallery gallery--2">
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/problema-sem-webcam.jpg"
+            aria-label="Ampliar: site do Iriun Webcam">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/problema-sem-webcam.jpg"
+              alt="Site do software Iriun Webcam, com botões de download e a imagem de um celular usado como webcam"
+              loading="lazy">
+          </button>
+          <p class="caption">Site do <span translate="no">Iriun Webcam</span></p>
+        </li>
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/streamdeckssimples.png"
+            aria-label="Ampliar: Stream Deck improvisado">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/streamdeckssimples.png"
+              alt="Stream Deck improvisado com teclado numérico." loading="lazy">
+          </button>
+          <p class="caption"><span translate="no">Stream Deck</span> improvisado com teclado numérico</p>
+        </li>
+      </ul>
+    </div>
+  </dialog>
+
+  <!-- Janela: Organização das transmissões -->
+  <dialog class="modal" id="dlg-org" aria-labelledby="dlg-org-t">
+    <div class="modal__head">
+      <div>
+        <p class="modal__overline">03 · Soluções</p>
+        <h3 class="modal__title" id="dlg-org-t">Organização das transmissões</h3>
+      </div>
+      <button class="modal__close" type="button" data-close><span aria-hidden="true">×</span><span
+          class="sr-only">Fechar</span></button>
+    </div>
+    <div class="modal__body">
+      <ul class="bullets">
+        <li>Camadas e pastas nomeadas por função, para encontrar tudo rápido ao fazer alterações.</li>
+        <li>Filtros de áudio e imagem para cada dispositivo, como microfones e câmeras.</li>
+        <li>Chat monitorado com <span translate="no">Nightbot</span>, moderadores de confiança e um segundo monitor.
+        </li>
+      </ul>
+      <ul class="gallery gallery--2">
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/organizacao-camadas-1.jpg"
+            aria-label="Ampliar: tela do Streamlabs">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/organizacao-camadas-1.jpg"
+              alt="Tela do Streamlabs com a prévia da cena, a lista de fontes e o mixer de áudio" loading="lazy">
+          </button>
+          <p class="caption">Cena montada em camadas no <span translate="no">Streamlabs</span></p>
+        </li>
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/macros-scenes.jpg"
+            aria-label="Ampliar: macros de cenas do overlay">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/macros-scenes.jpg" alt="Macros de cenas do overlay"
+              loading="lazy">
+          </button>
+          <p class="caption">Macros de cenas do overlay</p>
+        </li>
+      </ul>
+    </div>
+  </dialog>
+
+  <!-- Janela: Interatividade e acessibilidade -->
+  <dialog class="modal" id="dlg-inter" aria-labelledby="dlg-inter-t">
+    <div class="modal__head">
+      <div>
+        <p class="modal__overline">03 · Soluções</p>
+        <h3 class="modal__title" id="dlg-inter-t">Interatividade e acessibilidade</h3>
+      </div>
+      <button class="modal__close" type="button" data-close><span aria-hidden="true">×</span><span
+          class="sr-only">Fechar</span></button>
+    </div>
+    <div class="modal__body">
+      <ul class="bullets">
+        <li>Espectadores resgatam sons com os pontos de canal (recurso nativo da <span translate="no">Twitch</span>),
+          porém personalizei com ícones temáticos e busquei sons engraçados e promovi recompensas divertidas.</li>
+        <li><span translate="no">Stream-CC</span> gera legendas em tempo real que podem ser desativadas a qualquer
+          momento.</li>
+        <li>Aviso de que também respondo em inglês e alemão, para o público internacional.</li>
+        <li>Integrações com <span translate="no">Triggerfyre</span>, <span translate="no">StreamElements</span>, <span
+            translate="no">Stream-CC</span> e <span translate="no">Nightbot</span>.</li>
+      </ul>
+      <ul class="gallery gallery--2">
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/sistema-pontos.jpg"
+            aria-label="Ampliar: sistema de resgate de pontos">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/sistema-pontos.jpg"
+              alt="Sistema de resgate de pontos da Twitch" loading="lazy">
+          </button>
+          <p class="caption">Resgate de pontos do canal</p>
+        </li>
+        <li>
+          <button class="zoom" type="button"
+            data-full="https://brumphomet-lives.vercel.app/assets/img/closedcaptions2.jpg"
+            aria-label="Ampliar: legendas do Stream-CC">
+            <img src="https://brumphomet-lives.vercel.app/assets/img/closedcaptions2.jpg"
+              alt="Live com o overlay do canal e legendas automáticas do Stream-CC sobre a câmera" loading="lazy">
+          </button>
+          <p class="caption">Legendas automáticas com <span translate="no">Stream-CC</span></p>
+        </li>
+      </ul>
+    </div>
+  </dialog>
+
+  <!-- Janela: JBrum FM -->
+  <dialog class="modal" id="dlg-fm" aria-labelledby="dlg-fm-t">
+    <div class="modal__head">
+      <div>
+        <p class="modal__overline">03 · Soluções</p>
+        <h3 class="modal__title" id="dlg-fm-t" translate="no">JBrum FM</h3>
+      </div>
+      <button class="modal__close" type="button" data-close><span aria-hidden="true">×</span><span
+          class="sr-only">Fechar</span></button>
+    </div>
+    <div class="modal__body">
+      <ul class="bullets">
+        <li>Aposta na nostalgia para as lives de conversa (“<span translate="no">Just Chatting</span>”) realizando um
+          trocadilho com meu sobrenome e homenagem bem-humorada à rádio <span translate="no">JB FM</span>, como nas
+          antigas rádios e na saudosa emissora <span translate="no">MTV</span>.</li>
+        <li>Fiz uma brincadeira regravando com a minha voz uma vinheta icônica de uma rádio sediada no Rio de Janeiro.</li>
+      </ul>
+    </div>
+  </dialog>
+
+  <!-- FIM: JANELAS DE DETALHES -->
+
+  <!-- INÍCIO: IMAGEM AMPLIADA (lightbox; abre por cima de uma janela de detalhes) -->
+  <dialog class="lightbox" id="lightbox" aria-label="Imagem ampliada">
+    <button class="lightbox__close" type="button" data-close><span aria-hidden="true">×</span><span
+        class="sr-only">Fechar imagem ampliada</span></button>
+    <img class="lightbox__img" src="" alt="">
+  </dialog>
+  <!-- FIM: IMAGEM AMPLIADA -->
+
+  <!-- INÍCIO: SCRIPTS -->
+  <script src="main.js"></script>
+  <!-- FIM: SCRIPTS -->
+</body>
+
+</html>
